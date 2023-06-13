@@ -1,0 +1,13 @@
+.vscode
+.obsidian
+.DS_Store
+*.a
+*.o
+vgcore.*
+info.plist
+philo
+*.supp
+*.log
+*.swp
+*.mk
+*.txt
