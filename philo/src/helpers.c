@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/13 12:05:33 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:00:08 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,25 @@ int	ft_atoi(const char *nptr)
 		nptr++;
 	}
 	return (i * n);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	char			*dest;
+	int				check;
+	unsigned int	i;
+
+	i = 0;
+	check = nmemb > size;
+	if ((nmemb * size) < ((nmemb * check) + (size * !check)))
+		return (NULL);
+	dest = malloc(nmemb * size);
+	if (!dest)
+		return (NULL);
+	while (i < (nmemb * size))
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }
