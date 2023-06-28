@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/13 22:00:08 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/06/27 21:03:16 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,13 @@ static int	ft_isspace(char c)
 	return (0);
 }
 
-int	ft_atoi(const char *nptr)
+int	ft_atol(const char *nptr)
 {
-	int	i;
-	int	n;
+	long	i;
 
 	i = 0;
-	n = 1;
 	while (ft_isspace(*nptr))
 		nptr++;
-	if (*nptr == '-')
-		n = -1;
 	if (*nptr == '-' || *nptr == '+')
 		nptr++;
 	while (ft_isdigit(*nptr))
@@ -39,7 +35,7 @@ int	ft_atoi(const char *nptr)
 		i = (i * 10) + (*nptr - 48);
 		nptr++;
 	}
-	return (i * n);
+	return (i);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)

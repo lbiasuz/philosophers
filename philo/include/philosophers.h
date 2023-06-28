@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/14 22:29:27 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/06/27 21:41:03 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,33 @@
 
 void	watch(t_tb);
 
-int		ft_atoi(const char *nptr);
+int		ft_atol(const char *nptr);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 # define USAGE "number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat] \n\
 Times must be in miliseconds and should not be less than 60\n"
 
+typedef struct timeval t_tv;
+
 typedef struct	s_ph {
-	int	is_dead;
-	int	is_eating;
+	int		is_dead;
+	int		is_eating;
+	int		is_sleeping;
+	t_tv	lasteaten;
+	pthread_mutex_t **fork[2];
 } t_ph;
 
-typedef struct s_tb {
-	int				eat_duration;
-	int				sleep_duration;
-	int				think_durantion;
-	int				servings_total;
+typedef struct s_st {
+	long			nop;
+	t_tv			start_time;
+	time_t			eat_lap;
+	time_t			sleep_lap;
+	time_t			die_lap;
+	long			servings;
+	int				its_over;
 	pthread_mutex_t	**forks;
-} t_tb;
+	pthread_t		**philosophers;
+} t_st; //type_settings
 
 #endif
