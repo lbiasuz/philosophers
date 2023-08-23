@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/27 21:41:52 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/07/02 16:46:56 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,24 @@ static int	allowed_input(int argc, char **argv)
 		return (0);
 	}
 	return (1);
+}
+
+int		philosopher_lifecycle(t_st	*settings, t_ph *philosopher);
+
+void	init_sim(t_st *settings)
+{
+	int		i;
+	t_ph	*philosopher;
+	
+	i = 0;
+	settings->philosophers = (t_ph **) ft_calloc(settings->nop, sizeof(t_ph*));
+	while (i < settings->nop)
+	{
+		philosopher = (t_ph **) ft_calloc(1, sizeof(t_ph *));
+		philosopher 
+		pthread_create(settings->philosophers[i], NULL, philosopher_lifecycle, (void *) philosopher);
+		i++;
+	}
 }
 
 t_st	*init_settings(char **args, int argc)
@@ -48,6 +66,12 @@ int	main(int argc, char **argv)
 	if (!allowed_input(argc, argv))
 		return (1);
 	settings = init_settings(argv, argc);
+	if (settings->nop == 0)
+		return (1);
+	else if (settings->nop == 1)
+		single_philo_exec();
+	else
+		multiple_philo_exec();
 
 }
 // (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));
