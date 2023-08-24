@@ -35,23 +35,23 @@ Times must be in miliseconds and should not be less than 60\n"
 typedef struct timeval t_tv;
 
 typedef struct	s_ph {
-	int		is_dead;
-	int		is_eating;
-	int		is_sleeping;
-	t_tv	lasteaten;
+	int				is_dead;
+	int				is_eating;
+	int				is_sleeping;
+	t_tv			lasteaten;
 	pthread_mutex_t **fork[2];
-} t_ph;
+} t_ph; //type_philosopher
 
 typedef struct s_st {
-	long			nop;
-	t_tv			start_time;
-	time_t			eat_lap;
-	time_t			sleep_lap;
-	time_t			die_lap;
-	long			servings;
-	int				its_over;
-	pthread_mutex_t	**forks;
-	pthread_t		**philosophers;
+	long				nop;
+	unsigned long		start_time;
+	unsigned long		eat_lap;
+	unsigned long		sleep_lap;
+	unsigned long		die_lap;
+	long				servings;
+	int					its_over;
+	pthread_mutex_t		**forks;
+	pthread_t			**philosophers;
 } t_st; //type_settings
 
 #endif

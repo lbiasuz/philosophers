@@ -58,3 +58,8 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 	return (dest);
 }
+
+unsigned long	timeval_to_ul(t_tv time)
+{
+	return ((unsigned long) ((time.tv_sec * 1000) + time.tv_usec));
+}
