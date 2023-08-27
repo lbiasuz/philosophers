@@ -38,8 +38,8 @@ typedef struct	s_ph {
 	int				is_dead;
 	int				is_eating;
 	int				is_sleeping;
-	t_tv			lasteaten;
-	pthread_mutex_t **fork[2];
+	unsigned long	lasteaten;
+	pthread_mutex_t *fork[2];
 } t_ph; //type_philosopher
 
 typedef struct s_st {
@@ -50,8 +50,8 @@ typedef struct s_st {
 	unsigned long		die_lap;
 	long				servings;
 	int					its_over;
-	pthread_mutex_t		**forks;
-	pthread_t			**philosophers;
+	pthread_mutex_t		*forks;
+	pthread_t			*philosophers;
 } t_st; //type_settings
 
 #endif
