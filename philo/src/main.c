@@ -24,13 +24,17 @@ static int	allowed_input(int argc, char **argv)
 }
 
 int		philosopher_lifecycle(t_st *st, t_ph *ph)
-{
-	printf("philosopher %d has taken a fork", ph->id);
+{	
+	t_tv	temp;
+
+
+	printf("%ld philosopher %d has taken a fork", gettimeofday(NULL) ph->id);
 	pthread_mutex_lock(ph->fork[0]);
 	printf("philosopher %d has taken a fork", ph->id);
 	pthread_mutex_lock(ph->fork[1]);
 	printf("philosopher %d is eating");
 	usleep(st->sleep_lap);
+	if ()
 
 }
 
