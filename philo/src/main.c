@@ -23,30 +23,38 @@ static int	allowed_input(int argc, char **argv)
 	return (1);
 }
 
-int		philosopher_lifecycle(t_st	*settings, t_ph *philosopher)
+int		philosopher_lifecycle(t_st *st, t_ph *ph)
 {
-	;
+	printf("philosopher %d has taken a fork", ph->id);
+	pthread_mutex_lock(ph->fork[0]);
+	printf("philosopher %d has taken a fork", ph->id);
+	pthread_mutex_lock(ph->fork[1]);
+	printf("philosopher %d is eating");
+	usleep(st->sleep_lap);
+
 }
 
 t_ph	*init_sim(t_st *settings)
 {
 	int		i;
 	t_ph	*philosophers;
-	
+
 	i = 0;
 	philosophers = (t_ph *) ft_calloc(settings->nop, sizeof(t_ph));
 	while (i < settings->nop)
 	{
-		philosophers[i].is_dead = 0;		
-		philosophers[i].is_eating = 0;		
+		philosophers[i].id = i;
+		philosophers[i].is_dead = 0;
+		philosophers[i].is_eating = 0;
 		philosophers[i].is_sleeping = 0;
 		philosophers[i].lasteaten = 0;
 		philosophers[i].fork[0] = &settings->forks[i];
-		philosophers[i].fork[1] = &settings->forks[i + 1];		
+		philosophers[i].fork[1] = &settings->forks[i + 1];
 		i++;
 	}
-	philosophers[settings->nop].is_dead = 0;		
-	philosophers[settings->nop].is_eating = 0;		
+	philosophers[i].id = i;
+	philosophers[settings->nop].is_dead = 0;
+	philosophers[settings->nop].is_eating = 0;
 	philosophers[settings->nop].is_sleeping = 0;
 	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
 	philosophers[settings->nop].fork[1] = &settings->forks[0];
@@ -54,6 +62,7 @@ t_ph	*init_sim(t_st *settings)
 		pthread_create(&settings->philosophers[i], NULL, philosopher_lifecycle, (void *) &philosophers[i]);
 	return (philosophers);
 }
+
 t_st	*init_settings(char **args, int argc)
 {
 	t_st	*settings;

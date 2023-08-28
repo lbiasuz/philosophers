@@ -35,6 +35,7 @@ Times must be in miliseconds and should not be less than 60\n"
 typedef struct timeval t_tv;
 
 typedef struct	s_ph {
+	int				id;
 	int				is_dead;
 	int				is_eating;
 	int				is_sleeping;
