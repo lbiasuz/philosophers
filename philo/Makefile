@@ -12,7 +12,7 @@
 
 NAME	=	philo
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra -g3
+CFLAGS	=	-Wall -Werror -Wextra -g3 -fsanitize=thread
 
 SRC_DIR	=	src
 HEAD_DIR=	include

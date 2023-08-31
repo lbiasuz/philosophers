@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/07/02 16:46:56 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/08/30 22:03:55 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ int		philosopher_lifecycle(t_st *st, t_ph *ph)
 {	
 	t_tv	temp;
 
-
-	printf("%ld philosopher %d has taken a fork", gettimeofday(NULL) ph->id);
+	printf("%ld philosopher %d has taken a fork", gettimeofday(&temp, NULL), ph->id);
 	pthread_mutex_lock(ph->fork[0]);
 	printf("philosopher %d has taken a fork", ph->id);
 	pthread_mutex_lock(ph->fork[1]);
 	printf("philosopher %d is eating");
 	usleep(st->sleep_lap);
-	if ()
-
 }
 
 t_ph	*init_sim(t_st *settings)
@@ -48,7 +45,6 @@ t_ph	*init_sim(t_st *settings)
 	while (i < settings->nop)
 	{
 		philosophers[i].id = i;
-		philosophers[i].is_dead = 0;
 		philosophers[i].is_eating = 0;
 		philosophers[i].is_sleeping = 0;
 		philosophers[i].lasteaten = 0;
@@ -57,7 +53,6 @@ t_ph	*init_sim(t_st *settings)
 		i++;
 	}
 	philosophers[i].id = i;
-	philosophers[settings->nop].is_dead = 0;
 	philosophers[settings->nop].is_eating = 0;
 	philosophers[settings->nop].is_sleeping = 0;
 	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
@@ -101,7 +96,5 @@ int	main(int argc, char **argv)
 		return (single_philo_exec());
 	
 	init_sim(settings);
-
-
 }
 // (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));

@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/27 21:03:16 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/08/30 23:19:48 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ void	log(t_st *st, t_ph *ph, char *action)
 {
 	t_tv	temp;
 
+	pthread_mutex_lock(st->lock);
+	if (st->its_over)
+	{
+		pthread_mutex_unlock(st->lock);
+		return ;
+	}
+	pthread_mutex_unlock(st->lock);
 	gettimeofday(&temp, NULL);
+	pthread_mutex_lock(ph->lock);
+	ph->lasteaten = tv2ul(temp);
+	pthread_mutex_unlock(ph->lock);
 	printf("%lld philosopher %d %s", tv2ul(temp) - st->start_time, ph->id, action);
 }

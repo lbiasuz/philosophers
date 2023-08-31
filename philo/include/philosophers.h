@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/06/27 21:41:03 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/08/30 22:03:38 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ typedef struct timeval t_tv;
 
 typedef struct	s_ph {
 	int				id;
-	int				is_dead;
 	int				is_eating;
 	int				is_sleeping;
+	int				times_eaten;
 	unsigned long	lasteaten;
+	pthread_mutex_t *lock;
 	pthread_mutex_t *fork[2];
 } t_ph; //type_philosopher
 
@@ -51,6 +52,7 @@ typedef struct s_st {
 	unsigned long		die_lap;
 	long				servings;
 	int					its_over;
+	pthread_mutex_t		*lock;
 	pthread_mutex_t		*forks;
 	pthread_t			*philosophers;
 } t_st; //type_settings
