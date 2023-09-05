@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/04 21:56:14 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 22:22:16 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@
 # include <pthread.h> // pthread_create, pthread_detach, pthread_join,
 						// pthread_mutex_init, pthread_mutex_destroy,
 						// pthread_mutex_lock, pthread_mutex_unlock
-
-void	watch(t_st settings);
-
-int		ft_atol(const char *nptr);
-void	*ft_calloc(size_t nmemb, size_t size);
 
 # define USAGE "number_of_philosophers time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat] \n\
@@ -58,5 +53,8 @@ typedef struct s_st {
 	pthread_t			*philosophers;
 }	t_st;
 //type_settings
-
+void	watch(t_st *settings);
+unsigned long	tv2ul(t_tv time);
+int		ft_atol(const char *nptr);
+void	*ft_calloc(size_t nmemb, size_t size);
 #endif

@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/04 21:53:56 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 22:17:32 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	log(t_st *st, t_ph *ph, char *action)
 	}
 	gettimeofday(&temp, NULL);
 	ph->lasteaten = tv2ul(temp);
-	printf("%lld philosopher %d %s",
+	printf("%ld philosopher %d %s",
 		tv2ul(temp) - st->start_time, ph->id, action);
 	pthread_mutex_unlock(ph->lock);
 }

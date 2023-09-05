@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/04 21:50:20 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 22:31:06 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,20 @@ static int	allowed_input(int argc, char **argv)
 	return (1);
 }
 
-int	philosopher_lifecycle(t_st *st, t_ph *ph)
+void	*philosopher_lifecycle(void *args)
 {
 	t_tv	temp;
+	t_ph	*ph;
 
-	printf("%ld philosopher %d has taken a fork",
-		sgettimeofday(&temp, NULL), ph->id);
+	ph = (t_ph *) args;
+	printf("%d philosopher %d has taken a fork",
+		gettimeofday(&temp, NULL), ph->id);
 	pthread_mutex_lock(ph->fork[0]);
 	printf("philosopher %d has taken a fork", ph->id);
 	pthread_mutex_lock(ph->fork[1]);
-	printf("philosopher %d is eating");
-	usleep(st->sleep_lap);
+	printf("philosopher %d is eating", ph->id);
+	usleep(ph->st->sleep_lap);
+	return (0);
 }
 
 t_ph	*init_sim(t_st *settings)
@@ -80,7 +83,7 @@ t_st	*init_settings(char **args, int argc)
 		settings->servings = -1;
 	settings->its_over = 0;
 	gettimeofday(&start, NULL);
-	settings->start_time = timeval_to_ul(start);
+	settings->start_time = tv2ul(start);
 	settings->forks = ft_calloc(settings->nop, sizeof(pthread_mutex_t));
 	return (settings);
 }
@@ -92,10 +95,8 @@ int	main(int argc, char **argv)
 	if (!allowed_input(argc, argv))
 		return (1);
 	settings = init_settings(argv, argc);
-	if (settings->nop == 0)
-		return (1);
-	else if (settings->nop == 1)
-		return (single_philo_exec());
 	init_sim(settings);
+	watch(settings);
+	return (0);
 }
 // (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));
