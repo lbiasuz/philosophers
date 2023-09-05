@@ -6,11 +6,11 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/08/30 22:03:38 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 21:56:14 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
 # include <string.h> // memset
@@ -20,10 +20,10 @@
 # include <sys/wait.h> // usleep
 # include <sys/time.h> // gettimeofday
 # include <pthread.h> // pthread_create, pthread_detach, pthread_join,
- 					  // pthread_mutex_init, pthread_mutex_destroy,
-					  // pthread_mutex_lock, pthread_mutex_unlock
+						// pthread_mutex_init, pthread_mutex_destroy,
+						// pthread_mutex_lock, pthread_mutex_unlock
 
-void	watch(t_tb);
+void	watch(t_st settings);
 
 int		ft_atol(const char *nptr);
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -32,17 +32,18 @@ void	*ft_calloc(size_t nmemb, size_t size);
 [number_of_times_each_philosopher_must_eat] \n\
 Times must be in miliseconds and should not be less than 60\n"
 
-typedef struct timeval t_tv;
+typedef struct timeval	t_tv;
 
-typedef struct	s_ph {
+typedef struct s_ph {
 	int				id;
 	int				is_eating;
 	int				is_sleeping;
 	int				times_eaten;
 	unsigned long	lasteaten;
-	pthread_mutex_t *lock;
-	pthread_mutex_t *fork[2];
-} t_ph; //type_philosopher
+	pthread_mutex_t	*lock;
+	pthread_mutex_t	*fork[2];
+}	t_ph;
+//type_philosopher
 
 typedef struct s_st {
 	long				nop;
@@ -55,6 +56,7 @@ typedef struct s_st {
 	pthread_mutex_t		*lock;
 	pthread_mutex_t		*forks;
 	pthread_t			*philosophers;
-} t_st; //type_settings
+}	t_st;
+//type_settings
 
 #endif

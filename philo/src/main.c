@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/08/30 22:03:55 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 21:50:20 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ static int	allowed_input(int argc, char **argv)
 	return (1);
 }
 
-int		philosopher_lifecycle(t_st *st, t_ph *ph)
-{	
+int	philosopher_lifecycle(t_st *st, t_ph *ph)
+{
 	t_tv	temp;
 
-	printf("%ld philosopher %d has taken a fork", gettimeofday(&temp, NULL), ph->id);
+	printf("%ld philosopher %d has taken a fork",
+		sgettimeofday(&temp, NULL), ph->id);
 	pthread_mutex_lock(ph->fork[0]);
 	printf("philosopher %d has taken a fork", ph->id);
 	pthread_mutex_lock(ph->fork[1]);
@@ -58,7 +59,8 @@ t_ph	*init_sim(t_st *settings)
 	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
 	philosophers[settings->nop].fork[1] = &settings->forks[0];
 	while (--i >= 0)
-		pthread_create(&settings->philosophers[i], NULL, philosopher_lifecycle, (void *) &philosophers[i]);
+		pthread_create(&settings->philosophers[i], NULL,
+			philosopher_lifecycle, (void *) &philosophers[i]);
 	return (philosophers);
 }
 
@@ -94,7 +96,6 @@ int	main(int argc, char **argv)
 		return (1);
 	else if (settings->nop == 1)
 		return (single_philo_exec());
-	
 	init_sim(settings);
 }
 // (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));

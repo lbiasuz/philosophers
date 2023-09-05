@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/08/30 23:19:48 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/04 21:53:56 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 unsigned long	tv2ul(t_tv time)
 {
-	return ((unsigned long) ((time.tv_sec * 1000) + time.tv_usec));
+	return ((unsigned long)((time.tv_sec * 1000) + time.tv_usec));
 }
 
 void	log(t_st *st, t_ph *ph, char *action)
@@ -74,10 +74,9 @@ void	log(t_st *st, t_ph *ph, char *action)
 		pthread_mutex_unlock(st->lock);
 		return ;
 	}
-	pthread_mutex_unlock(st->lock);
 	gettimeofday(&temp, NULL);
-	pthread_mutex_lock(ph->lock);
 	ph->lasteaten = tv2ul(temp);
+	printf("%lld philosopher %d %s",
+		tv2ul(temp) - st->start_time, ph->id, action);
 	pthread_mutex_unlock(ph->lock);
-	printf("%lld philosopher %d %s", tv2ul(temp) - st->start_time, ph->id, action);
 }
