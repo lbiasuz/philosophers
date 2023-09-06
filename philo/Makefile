@@ -18,18 +18,18 @@ SRC_DIR	=	src
 HEAD_DIR=	include
 OBJ_DIR	=	bin
 
-SRC		=	$(SRC_DIR)/main.c
+SRC		=	$(SRC_DIR)/main.c $(SRC_DIR)/helpers.c
 HEAD	=	$(HEAD_DIR)/philosophers.h
-OBJ		=	$(SRC:%.c=%.o)
+OBJ		=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(HEAD_DIR:%=-I%/)
 
-%.o: %.c $(HEAD)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEAD)
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $(OBJ_DIR)/$@ $(HEAD_DIR:%=-I%/)
+	$(CC) $(CFLAGS) -c $< -o $(@:$(SRC_DIR)=$(OBJ_DIR)) $(HEAD_DIR:%=-I%/)
 
 clean:
 	rm -rf $(OBJ_DIR)

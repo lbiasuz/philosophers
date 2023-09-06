@@ -23,12 +23,12 @@ static int	allowed_input(int argc, char **argv)
 	return (1);
 }
 
-void	*philosopher_lifecycle(void *args)
+void	*philosopher_lifecycle(void *arg)
 {
 	t_tv	temp;
 	t_ph	*ph;
 
-	ph = (t_ph *) args;
+	ph = (t_ph *) arg;
 	printf("%d philosopher %d has taken a fork",
 		gettimeofday(&temp, NULL), ph->id);
 	pthread_mutex_lock(ph->fork[0]);
@@ -61,6 +61,7 @@ t_ph	*init_sim(t_st *settings)
 	philosophers[settings->nop].is_sleeping = 0;
 	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
 	philosophers[settings->nop].fork[1] = &settings->forks[0];
+	philosophers[settings->nop].st = settings;
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
 			philosopher_lifecycle, (void *) &philosophers[i]);
@@ -88,6 +89,8 @@ t_st	*init_settings(char **args, int argc)
 	return (settings);
 }
 
+// void	watch(t_st	*settings)
+
 int	main(int argc, char **argv)
 {
 	t_st	*settings;
@@ -96,7 +99,7 @@ int	main(int argc, char **argv)
 		return (1);
 	settings = init_settings(argv, argc);
 	init_sim(settings);
-	watch(settings);
+	// watch(settings);
 	return (0);
 }
 // (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));

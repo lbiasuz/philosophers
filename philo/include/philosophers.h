@@ -24,21 +24,10 @@
 						// pthread_mutex_lock, pthread_mutex_unlock
 
 # define USAGE "number_of_philosophers time_to_die time_to_eat time_to_sleep \
-[number_of_times_each_philosopher_must_eat] \n\
+number_of_times_each_philosopher_must_eat \n\
 Times must be in miliseconds and should not be less than 60\n"
 
 typedef struct timeval	t_tv;
-
-typedef struct s_ph {
-	int				id;
-	int				is_eating;
-	int				is_sleeping;
-	int				times_eaten;
-	unsigned long	lasteaten;
-	pthread_mutex_t	*lock;
-	pthread_mutex_t	*fork[2];
-}	t_ph;
-//type_philosopher
 
 typedef struct s_st {
 	long				nop;
@@ -53,6 +42,19 @@ typedef struct s_st {
 	pthread_t			*philosophers;
 }	t_st;
 //type_settings
+
+typedef struct s_ph {
+	int				id;
+	int				is_eating;
+	int				is_sleeping;
+	int				times_eaten;
+	unsigned long	lasteaten;
+	pthread_mutex_t	*lock;
+	pthread_mutex_t	*fork[2];
+	t_st			*st;
+}	t_ph;
+//type_philosopher
+
 void	watch(t_st *settings);
 unsigned long	tv2ul(t_tv time);
 int		ft_atol(const char *nptr);

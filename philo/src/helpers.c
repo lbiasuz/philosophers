@@ -30,7 +30,7 @@ int	ft_atol(const char *nptr)
 		nptr++;
 	if (*nptr == '-' || *nptr == '+')
 		nptr++;
-	while (ft_isdigit(*nptr))
+	while (*nptr >= '0' && *nptr <= '9')
 	{
 		i = (i * 10) + (*nptr - 48);
 		nptr++;
@@ -64,7 +64,7 @@ unsigned long	tv2ul(t_tv time)
 	return ((unsigned long)((time.tv_sec * 1000) + time.tv_usec));
 }
 
-void	log(t_st *st, t_ph *ph, char *action)
+void	log_action(t_st *st, t_ph *ph, char *action)
 {
 	t_tv	temp;
 
