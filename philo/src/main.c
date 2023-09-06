@@ -3,40 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/04 22:31:06 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/05 22:34:21 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-static int	allowed_input(int argc, char **argv)
-{
-	(void)argv;
-	if (argc > 6 || argc < 5)
-	{
-		write(2, USAGE, sizeof(USAGE) - 1);
-		return (0);
-	}
-	return (1);
-}
-
 void	*philosopher_lifecycle(void *arg)
 {
-	t_tv	temp;
 	t_ph	*ph;
+	t_tv	temp;
 
 	ph = (t_ph *) arg;
-	printf("%d philosopher %d has taken a fork",
-		gettimeofday(&temp, NULL), ph->id);
+	log_action(ph, "has taken a fork");
 	pthread_mutex_lock(ph->fork[0]);
-	printf("philosopher %d has taken a fork", ph->id);
+	log_action(ph, "has taken a fork");
 	pthread_mutex_lock(ph->fork[1]);
-	printf("philosopher %d is eating", ph->id);
-	usleep(ph->st->sleep_lap);
-	return (0);
+	log_action(ph, "is eating");
+	usleep(ph->st->eat_lap);
+	log_action(ph, "is thinking");
+	pthread_mutex_lock(ph->lock);
+	gettimeofday(&temp, NULL);
+	ph->lasteaten = tv2ul(temp);
+	ph->times_eaten++;
+	pthread_mutex_unlock(ph->lock);
+	log_action(ph, "is thinking");
+	return (NULL);
 }
 
 t_ph	*init_sim(t_st *settings)
@@ -89,17 +84,42 @@ t_st	*init_settings(char **args, int argc)
 	return (settings);
 }
 
-// void	watch(t_st	*settings)
+void	watch(t_ph	*philosophers)
+{
+	t_tv	temp;
+	t_st	*st;
+	int		id;
+
+	id = -1;
+	st = philosophers[0].st;
+	while (1)
+	{
+		if (id < st->nop)
+			id++;
+		else
+			id = 0;
+		pthread_mutex_lock(philosophers[id].lock);
+		gettimeofday(&temp, NULL);
+		if ((tv2ul(temp) - philosophers[id].lasteaten) > st->die_lap)
+		{
+			pthread_mutex_lock(st->lock);
+			st->its_over = 1;
+			pthread_mutex_unlock(st->lock);
+			break ;
+		}
+		pthread_mutex_unlock(philosophers[id].lock);
+	}
+}
 
 int	main(int argc, char **argv)
 {
 	t_st	*settings;
+	t_ph	*philosophers;
 
 	if (!allowed_input(argc, argv))
 		return (1);
 	settings = init_settings(argv, argc);
-	init_sim(settings);
-	// watch(settings);
+	philosophers = init_sim(settings);
+	watch(philosophers);
 	return (0);
 }
-// (pthread_mutex_t **) ft_calloc(settings->nop, sizeof(pthread_mutex_t));

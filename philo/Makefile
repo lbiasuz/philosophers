@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+         #
+#    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/06/05 12:16:02 by lbiasuz          ###   ########.fr        #
+#    Updated: 2023/09/05 22:35:11 by lbiasuz@stu      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR	=	src
 HEAD_DIR=	include
 OBJ_DIR	=	bin
 
-SRC		=	$(SRC_DIR)/main.c $(SRC_DIR)/helpers.c
+SRC		=	$(SRC_DIR)/input.c $(SRC_DIR)/main.c $(SRC_DIR)/helpers.c
 HEAD	=	$(HEAD_DIR)/philosophers.h
 OBJ		=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
