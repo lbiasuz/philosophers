@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
+/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/05 22:34:21 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/09 19:59:33 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,44 @@ void	*philosopher_lifecycle(void *arg)
 	t_tv	temp;
 
 	ph = (t_ph *) arg;
-	log_action(ph, "has taken a fork");
-	pthread_mutex_lock(ph->fork[0]);
-	log_action(ph, "has taken a fork");
-	pthread_mutex_lock(ph->fork[1]);
-	log_action(ph, "is eating");
-	usleep(ph->st->eat_lap);
-	log_action(ph, "is thinking");
-	pthread_mutex_lock(ph->lock);
-	gettimeofday(&temp, NULL);
-	ph->lasteaten = tv2ul(temp);
-	ph->times_eaten++;
-	pthread_mutex_unlock(ph->lock);
-	log_action(ph, "is thinking");
+	pthread_mutex_lock(ph->st->lock);
+	while (!ph->st->its_over)
+	{	
+		pthread_mutex_unlock(ph->st->lock);
+		if (ph->id % 2 == 0)
+		{
+			pthread_mutex_lock(ph->fork[0]);
+			log_action(ph, "has taken a fork");
+			pthread_mutex_lock(ph->fork[1]);
+		}
+		else
+		{
+			pthread_mutex_lock(ph->fork[1]);
+			log_action(ph, "has taken a fork");
+			pthread_mutex_lock(ph->fork[0]);
+		}
+		log_action(ph, "has taken a fork");
+		log_action(ph, "is eating");
+		usleep(ph->st->eat_lap);
+		pthread_mutex_unlock(ph->fork[0]);
+		pthread_mutex_unlock(ph->fork[1]);
+		log_action(ph, "is sleeping");
+		usleep(ph->st->sleep_lap);
+		pthread_mutex_lock(ph->lock);
+		gettimeofday(&temp, NULL);
+		ph->lasteaten = tv2ul(temp);
+		ph->times_eaten++;
+		pthread_mutex_unlock(ph->lock);
+		log_action(ph, "is thinking");
+	}
 	return (NULL);
 }
 
-t_ph	*init_sim(t_st *settings)
+t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 {
 	int		i;
-	t_ph	*philosophers;
 
 	i = 0;
-	philosophers = (t_ph *) ft_calloc(settings->nop, sizeof(t_ph));
 	while (i < settings->nop)
 	{
 		philosophers[i].id = i;
@@ -49,39 +64,38 @@ t_ph	*init_sim(t_st *settings)
 		philosophers[i].lasteaten = 0;
 		philosophers[i].fork[0] = &settings->forks[i];
 		philosophers[i].fork[1] = &settings->forks[i + 1];
+		philosophers[i].lock = (pthread_mutex_t *) ft_calloc(1, sizeof(pthread_mutex_t));
+		philosophers[i].st = settings;
 		i++;
 	}
-	philosophers[i].id = i;
-	philosophers[settings->nop].is_eating = 0;
-	philosophers[settings->nop].is_sleeping = 0;
 	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
 	philosophers[settings->nop].fork[1] = &settings->forks[0];
-	philosophers[settings->nop].st = settings;
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
 			philosopher_lifecycle, (void *) &philosophers[i]);
 	return (philosophers);
 }
 
-t_st	*init_settings(char **args, int argc)
+t_st	*init_settings(char **args, int argc, t_st *st)
 {
-	t_st	*settings;
 	t_tv	start;
 
-	settings = ft_calloc(1, sizeof(t_st));
-	settings->nop = ft_atol(args[1]);
-	settings->die_lap = ft_atol(args[2]);
-	settings->eat_lap = ft_atol(args[3]);
-	settings->sleep_lap = ft_atol(args[4]);
+	st->nop = ft_atol(args[1]);
+	st->die_lap = ft_atol(args[2]);
+	st->eat_lap = ft_atol(args[3]);
+	st->sleep_lap = ft_atol(args[4]);
 	if (argc == 6)
-		settings->servings = ft_atol(args[5]);
+		st->servings = ft_atol(args[5]);
 	else
-		settings->servings = -1;
-	settings->its_over = 0;
+		st->servings = -1;
+	st->its_over = 0;
 	gettimeofday(&start, NULL);
-	settings->start_time = tv2ul(start);
-	settings->forks = ft_calloc(settings->nop, sizeof(pthread_mutex_t));
-	return (settings);
+	st->start_time = tv2ul(start);
+	st->forks = ft_calloc(st->nop, sizeof(pthread_mutex_t));
+	st->philosophers = (pthread_t *) ft_calloc(st->nop, sizeof(pthread_t));
+	st->lock = (pthread_mutex_t *) ft_calloc(1, sizeof(pthread_mutex_t));
+	pthread_mutex_init(st->lock, NULL);
+	return (st);
 }
 
 void	watch(t_ph	*philosophers)
@@ -109,6 +123,12 @@ void	watch(t_ph	*philosophers)
 		}
 		pthread_mutex_unlock(philosophers[id].lock);
 	}
+	id = st->nop - 1;
+	while (id > -1)
+	{
+		pthread_join(st->philosophers[id], NULL);
+		id--;
+	}
 }
 
 int	main(int argc, char **argv)
@@ -118,8 +138,10 @@ int	main(int argc, char **argv)
 
 	if (!allowed_input(argc, argv))
 		return (1);
-	settings = init_settings(argv, argc);
-	philosophers = init_sim(settings);
+	settings = (t_st *) ft_calloc(1, sizeof(t_st));
+	settings = init_settings(argv, argc, settings);
+	philosophers = (t_ph *) ft_calloc(settings->nop, sizeof(t_ph));
+	init_sim(settings, philosophers);
 	watch(philosophers);
 	return (0);
 }

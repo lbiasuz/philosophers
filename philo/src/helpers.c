@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
+/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/05 22:27:16 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/09 19:58:46 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,14 @@ void	log_action(t_ph *ph, char *action)
 {
 	t_tv	temp;
 
+	gettimeofday(&temp, NULL);
 	pthread_mutex_lock(ph->st->lock);
 	if (ph->st->its_over)
 	{
 		pthread_mutex_unlock(ph->st->lock);
 		return ;
 	}
-	gettimeofday(&temp, NULL);
-	ph->lasteaten = tv2ul(temp);
 	printf("%ld philosopher %d %s\n",
 		tv2ul(temp) - ph->st->start_time, ph->id, action);
-	pthread_mutex_unlock(ph->lock);
+	pthread_mutex_unlock(ph->st->lock);
 }
