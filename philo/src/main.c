@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/09 19:59:33 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/09 20:11:41 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ void	*philosopher_lifecycle(void *arg)
 
 	ph = (t_ph *) arg;
 	pthread_mutex_lock(ph->st->lock);
-	while (!ph->st->its_over)
+	while (!(ph->st->its_over))
 	{	
 		pthread_mutex_unlock(ph->st->lock);
+		
 		if (ph->id % 2 == 0)
 		{
 			pthread_mutex_lock(ph->fork[0]);
@@ -35,19 +36,27 @@ void	*philosopher_lifecycle(void *arg)
 			pthread_mutex_lock(ph->fork[0]);
 		}
 		log_action(ph, "has taken a fork");
+
 		log_action(ph, "is eating");
 		usleep(ph->st->eat_lap);
+
 		pthread_mutex_unlock(ph->fork[0]);
 		pthread_mutex_unlock(ph->fork[1]);
+
 		log_action(ph, "is sleeping");
 		usleep(ph->st->sleep_lap);
+
 		pthread_mutex_lock(ph->lock);
 		gettimeofday(&temp, NULL);
 		ph->lasteaten = tv2ul(temp);
 		ph->times_eaten++;
 		pthread_mutex_unlock(ph->lock);
+
 		log_action(ph, "is thinking");
+
+		pthread_mutex_lock(ph->st->lock);
 	}
+	pthread_mutex_unlock(ph->st->lock);
 	return (NULL);
 }
 
@@ -68,8 +77,9 @@ t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 		philosophers[i].st = settings;
 		i++;
 	}
-	philosophers[settings->nop].fork[0] = &settings->forks[settings->nop - 1];
-	philosophers[settings->nop].fork[1] = &settings->forks[0];
+	philosophers[i].fork[0] = &settings->forks[i];
+	philosophers[i].fork[1] = &settings->forks[0];
+	// TODO erro aqui
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
 			philosopher_lifecycle, (void *) &philosophers[i]);
