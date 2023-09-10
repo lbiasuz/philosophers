@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/09 20:11:41 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:24:15 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ void	*philosopher_lifecycle(void *arg)
 		}
 		log_action(ph, "has taken a fork");
 
-		log_action(ph, "is eating");
-		usleep(ph->st->eat_lap);
-
-		pthread_mutex_unlock(ph->fork[0]);
-		pthread_mutex_unlock(ph->fork[1]);
-
-		log_action(ph, "is sleeping");
-		usleep(ph->st->sleep_lap);
-
 		pthread_mutex_lock(ph->lock);
 		gettimeofday(&temp, NULL);
 		ph->lasteaten = tv2ul(temp);
 		ph->times_eaten++;
 		pthread_mutex_unlock(ph->lock);
+
+		log_action(ph, "is eating");
+		usleep(ph->st->eat_lap);
+
+		pthread_mutex_unlock(ph->fork[0]);
+		pthread_mutex_unlock(ph->fork[1]);
+		
+		log_action(ph, "is sleeping");
+		usleep(ph->st->sleep_lap);
 
 		log_action(ph, "is thinking");
 
@@ -63,6 +63,7 @@ void	*philosopher_lifecycle(void *arg)
 t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 {
 	int		i;
+	t_tv	temp;
 
 	i = 0;
 	while (i < settings->nop)
@@ -79,7 +80,8 @@ t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 	}
 	philosophers[i].fork[0] = &settings->forks[i];
 	philosophers[i].fork[1] = &settings->forks[0];
-	// TODO erro aqui
+	gettimeofday(&temp, NULL);
+	settings->start_time = tv2ul(temp); 
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
 			philosopher_lifecycle, (void *) &philosophers[i]);
@@ -124,10 +126,12 @@ void	watch(t_ph	*philosophers)
 			id = 0;
 		pthread_mutex_lock(philosophers[id].lock);
 		gettimeofday(&temp, NULL);
-		if ((tv2ul(temp) - philosophers[id].lasteaten) > st->die_lap)
+		if (tv2ul(temp) - st->start_time > philosophers[id].lasteaten && (tv2ul(temp) - st->start_time - philosophers[id].lasteaten) > st->die_lap)
 		{
+			printf("%lu\n", (tv2ul(temp) - st->start_time - philosophers[id].lasteaten));
 			pthread_mutex_lock(st->lock);
 			st->its_over = 1;
+			log_action(&philosophers[id], "died");
 			pthread_mutex_unlock(st->lock);
 			break ;
 		}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
+#    By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/09/05 22:35:11 by lbiasuz@stu      ###   ########.fr        #
+#    Updated: 2023/09/10 14:20:11 by lbiasuz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,11 +41,11 @@ re: fclean all
 
 valgrind: all
 	valgrind -s --leak-check=full --show-leak-kinds=all \
-			--log-fd=10 ./$(NAME) 10>helgrind.log
+			--log-fd=10 ./$(NAME) $(ARGS) 10>helgrind.log
 
 helgrind: all
 	valgrind --tool="helgrind" ./$(NAME) \
-			--log-fd=11 ./$(NAME) 11>helgrind.log
+			--log-fd=11 ./$(NAME) $(ARGS) 11>helgrind.log
 
 drd: all
 	valgrind --tool="drd" ./$(NAME) \
