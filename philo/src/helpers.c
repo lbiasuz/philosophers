@@ -6,7 +6,7 @@
 /*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/09 19:58:46 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/10 23:17:45 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 unsigned long	tv2ul(t_tv time)
 {
-	return ((unsigned long)((time.tv_sec * 1000) + time.tv_usec));
+	return ((unsigned long)((time.tv_sec * 1000) + (time.tv_usec)));
 }
 
 void	log_action(t_ph *ph, char *action)
@@ -76,6 +76,6 @@ void	log_action(t_ph *ph, char *action)
 		return ;
 	}
 	printf("%ld philosopher %d %s\n",
-		tv2ul(temp) - ph->st->start_time, ph->id, action);
+		(tv2ul(temp) - ph->st->start_time), ph->id, action);
 	pthread_mutex_unlock(ph->st->lock);
 }
