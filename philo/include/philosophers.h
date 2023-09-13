@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/10 15:52:26 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/13 08:51:42 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ unsigned long	tv2ul(t_tv time);
 int				ft_atol(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
 void			log_action(t_ph *ph, char *action);
-int		allowed_input(int argc, char **argv);
+int				allowed_input(int argc, char **argv);
 
 #endif

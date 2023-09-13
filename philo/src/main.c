@@ -6,16 +6,16 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/12 23:12:08 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/13 08:54:52 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-void *philosopher_lifecycle(void *arg)
+void	*philosopher_lifecycle(void *arg)
 {
-	t_ph *ph;
-	t_tv temp;
+	t_ph	*ph;
+	t_tv	temp;
 
 	ph = (t_ph *)arg;
 	pthread_mutex_lock(ph->st->lock);
@@ -59,10 +59,10 @@ void *philosopher_lifecycle(void *arg)
 	return (NULL);
 }
 
-t_ph *init_sim(t_st *settings, t_ph *philosophers)
+t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 {
-	int i;
-	t_tv temp;
+	int		i;
+	t_tv	temp;
 
 	i = 0;
 	while (i < settings->nop)
@@ -83,13 +83,13 @@ t_ph *init_sim(t_st *settings, t_ph *philosophers)
 	settings->start_time = tv2ul(temp);
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
-					   philosopher_lifecycle, (void *)&philosophers[i]);
+			philosopher_lifecycle, (void *)&philosophers[i]);
 	return (philosophers);
 }
 
-t_st *init_settings(char **args, int argc, t_st *st)
+t_st	*init_settings(char **args, int argc, t_st *st)
 {
-	t_tv start;
+	t_tv	start;
 
 	st->nop = ft_atol(args[1]);
 	st->die_lap = ft_atol(args[2]);
@@ -109,11 +109,11 @@ t_st *init_settings(char **args, int argc, t_st *st)
 	return (st);
 }
 
-void watch(t_ph *philosophers)
+void	watch(t_ph *philosophers)
 {
-	t_tv temp;
-	t_st *st;
-	int id;
+	t_tv	temp;
+	t_st	*st;
+	int		id;
 
 	id = -1;
 	st = philosophers[0].st;
@@ -131,9 +131,9 @@ void watch(t_ph *philosophers)
 			st->its_over = 1;
 			pthread_mutex_unlock(st->lock);
 			printf("%ld philosopher %d %s\n",
-				   (tv2ul(temp) - st->start_time), id, "died");
+				(tv2ul(temp) - st->start_time), id, "died");
 			pthread_mutex_unlock(philosophers[id].lock);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(philosophers[id].lock);
 	}
@@ -145,10 +145,10 @@ void watch(t_ph *philosophers)
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_st *settings;
-	t_ph *philosophers;
+	t_st	*settings;
+	t_ph	*philosophers;
 
 	if (!allowed_input(argc, argv))
 		return (1);
