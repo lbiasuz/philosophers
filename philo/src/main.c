@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/12 22:35:51 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/12 23:12:08 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,37 +18,44 @@ void *philosopher_lifecycle(void *arg)
 	t_tv temp;
 
 	ph = (t_ph *)arg;
-	if (ph->id % 2 == 0)
+	pthread_mutex_lock(ph->st->lock);
+	while (!ph->st->its_over)
 	{
-		pthread_mutex_lock(ph->fork[0]);
+		pthread_mutex_unlock(ph->st->lock);
+
+		if (ph->id % 2 == 0)
+		{
+			pthread_mutex_lock(ph->fork[0]);
+			log_action(ph, "has taken a fork");
+			pthread_mutex_lock(ph->fork[1]);
+		}
+		else
+		{
+			pthread_mutex_lock(ph->fork[1]);
+			log_action(ph, "has taken a fork");
+			pthread_mutex_lock(ph->fork[0]);
+		}
 		log_action(ph, "has taken a fork");
-		pthread_mutex_lock(ph->fork[1]);
+
+		pthread_mutex_lock(ph->lock);
+		gettimeofday(&temp, NULL);
+		ph->lasteaten = tv2ul(temp);
+		ph->times_eaten++;
+		pthread_mutex_unlock(ph->lock);
+
+		log_action(ph, "is eating");
+		usleep(ph->st->eat_lap * 1000);
+
+		pthread_mutex_unlock(ph->fork[0]);
+		pthread_mutex_unlock(ph->fork[1]);
+
+		log_action(ph, "is sleeping");
+		usleep(ph->st->sleep_lap * 1000);
+
+		log_action(ph, "is thinking");
+		pthread_mutex_lock(ph->st->lock);
 	}
-	else
-	{
-		pthread_mutex_lock(ph->fork[1]);
-		log_action(ph, "has taken a fork");
-		pthread_mutex_lock(ph->fork[0]);
-	}
-	log_action(ph, "has taken a fork");
-
-	pthread_mutex_lock(ph->lock);
-	gettimeofday(&temp, NULL);
-	ph->lasteaten = tv2ul(temp);
-	ph->times_eaten++;
-	pthread_mutex_unlock(ph->lock);
-
-	log_action(ph, "is eating");
-	usleep(ph->st->eat_lap);
-
-	pthread_mutex_unlock(ph->fork[0]);
-	pthread_mutex_unlock(ph->fork[1]);
-
-	log_action(ph, "is sleeping");
-	usleep(ph->st->sleep_lap);
-
-	log_action(ph, "is thinking");
-
+	pthread_mutex_unlock(ph->st->lock);
 	return (NULL);
 }
 
@@ -112,7 +119,7 @@ void watch(t_ph *philosophers)
 	st = philosophers[0].st;
 	while (1)
 	{
-		if (id < st->nop)
+		if (id < st->nop - 1)
 			id++;
 		else
 			id = 0;
@@ -125,7 +132,8 @@ void watch(t_ph *philosophers)
 			pthread_mutex_unlock(st->lock);
 			printf("%ld philosopher %d %s\n",
 				   (tv2ul(temp) - st->start_time), id, "died");
-			break ;
+			pthread_mutex_unlock(philosophers[id].lock);
+			break;
 		}
 		pthread_mutex_unlock(philosophers[id].lock);
 	}

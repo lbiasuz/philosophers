@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/10 23:17:45 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/12 22:44:17 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 unsigned long	tv2ul(t_tv time)
 {
-	return ((unsigned long)((time.tv_sec * 1000) + (time.tv_usec)));
+	return ((unsigned long)((time.tv_sec * 1000) + (time.tv_usec / 1000)));
 }
 
 void	log_action(t_ph *ph, char *action)
