@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/13 08:51:42 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/13 22:59:37 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,14 @@ typedef struct s_ph {
 }	t_ph;
 //type_philosopher
 
-void			watch(t_ph *philosophers);
+void			watch(t_ph *philosophers, t_st *st, int id);
 unsigned long	tv2ul(t_tv time);
 int				ft_atol(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
 void			log_action(t_ph *ph, char *action);
 int				allowed_input(int argc, char **argv);
+t_ph			*init_sim(t_st *settings, t_ph *philosophers);
+t_st			*init_settings(char **args, int argc, t_st *st);
+void			*philosopher_lifecycle(void *arg);
 
 #endif

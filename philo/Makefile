@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+         #
+#    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/09/10 14:20:11 by lbiasuz          ###   ########.fr        #
+#    Updated: 2023/09/13 22:47:57 by lbiasuz@stu      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR	=	src
 HEAD_DIR=	include
 OBJ_DIR	=	bin
 
-SRC		=	$(SRC_DIR)/input.c $(SRC_DIR)/main.c $(SRC_DIR)/helpers.c
+SRC		=	$(SRC_DIR)/input.c $(SRC_DIR)/main.c $(SRC_DIR)/helpers.c $(SRC_DIR)/init.c
 HEAD	=	$(HEAD_DIR)/philosophers.h
 OBJ		=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
@@ -44,11 +44,11 @@ valgrind: all
 			--log-fd=10 ./$(NAME) $(ARGS) 10>helgrind.log
 
 helgrind: all
-	valgrind --tool="helgrind" ./$(NAME) \
-			--log-fd=11 ./$(NAME) $(ARGS) 11>helgrind.log
+	valgrind -s  --history-level=none --tool="helgrind" \
+			--log-fd=9 ./$(NAME) $(ARGS) 9>helgrind.log
 
 drd: all
-	valgrind --tool="drd" ./$(NAME) \
-			--log-fd=12 ./$(NAME) 12>helgrind.log
+	valgrind -s   --history-level=none --tool="drd" \
+			--log-fd=8 ./$(NAME) $(ARGS) 8>helgrind.log
 
 .PHONY: all clean fclean re valgridn helgrind drd

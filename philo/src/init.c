@@ -1,0 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/13 22:29:44 by lbiasuz@stu       #+#    #+#             */
+/*   Updated: 2023/09/13 22:31:07 by lbiasuz@stu      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <philosophers.h>
+
+t_ph	*init_sim(t_st *settings, t_ph *philosophers)
+{
+	int		i;
+	t_tv	temp;
+
+	i = 0;
+	while (i < settings->nop)
+	{
+		philosophers[i].id = i;
+		philosophers[i].is_eating = 0;
+		philosophers[i].is_sleeping = 0;
+		philosophers[i].lasteaten = 0;
+		philosophers[i].fork[0] = &settings->forks[i];
+		philosophers[i].fork[1] = &settings->forks[i + 1];
+		philosophers[i].lock = (pthread_mutex_t *)ft_calloc(
+				1, sizeof(pthread_mutex_t));
+		philosophers[i].st = settings;
+		i++;
+	}
+	philosophers[i].fork[0] = &settings->forks[i];
+	philosophers[i].fork[1] = &settings->forks[0];
+	gettimeofday(&temp, NULL);
+	settings->start_time = tv2ul(temp);
+	while (--i >= 0)
+		pthread_create(&settings->philosophers[i], NULL,
+			philosopher_lifecycle, (void *)&philosophers[i]);
+	return (philosophers);
+}
+
+t_st	*init_settings(char **args, int argc, t_st *st)
+{
+	t_tv	start;
+
+	st->nop = ft_atol(args[1]);
+	st->die_lap = ft_atol(args[2]);
+	st->eat_lap = ft_atol(args[3]);
+	st->sleep_lap = ft_atol(args[4]);
+	if (argc == 6)
+		st->servings = ft_atol(args[5]);
+	else
+		st->servings = -1;
+	st->its_over = 0;
+	gettimeofday(&start, NULL);
+	st->start_time = tv2ul(start);
+	st->forks = ft_calloc(st->nop, sizeof(pthread_mutex_t));
+	st->philosophers = (pthread_t *)ft_calloc(st->nop, sizeof(pthread_t));
+	st->lock = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	pthread_mutex_init(st->lock, NULL);
+	return (st);
+}
