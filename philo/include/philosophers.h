@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/13 22:59:37 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/14 22:36:26 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ int				allowed_input(int argc, char **argv);
 t_ph			*init_sim(t_st *settings, t_ph *philosophers);
 t_st			*init_settings(char **args, int argc, t_st *st);
 void			*philosopher_lifecycle(void *arg);
+void			free_data(t_ph *philosophers, t_st *settings);
+t_tv			get_temp(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 22:29:44 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/13 22:31:07 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/14 22:43:41 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 {
 	int		i;
-	t_tv	temp;
 
 	i = 0;
 	while (i < settings->nop)
@@ -31,10 +30,9 @@ t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 		philosophers[i].st = settings;
 		i++;
 	}
-	philosophers[i].fork[0] = &settings->forks[i];
-	philosophers[i].fork[1] = &settings->forks[0];
-	gettimeofday(&temp, NULL);
-	settings->start_time = tv2ul(temp);
+	philosophers[i - 1].fork[0] = &settings->forks[i - 1];
+	philosophers[i - 1].fork[1] = &settings->forks[0];
+	settings->start_time = tv2ul(get_temp());
 	while (--i >= 0)
 		pthread_create(&settings->philosophers[i], NULL,
 			philosopher_lifecycle, (void *)&philosophers[i]);

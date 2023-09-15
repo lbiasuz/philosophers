@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/13 22:59:25 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/14 21:55:59 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ int	main(int argc, char **argv)
 	philosophers = (t_ph *)ft_calloc(settings->nop, sizeof(t_ph));
 	init_sim(settings, philosophers);
 	watch(philosophers, settings, -1);
+	free_data(philosophers, settings);
 	return (0);
 }
