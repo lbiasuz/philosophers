@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/16 11:07:04 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 18:28:45 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,10 @@ unsigned long	tv2ul(t_tv time)
 	return ((unsigned long)((time.tv_sec * 1000) + (time.tv_usec / 1000)));
 }
 
-void	log_action(t_ph *ph, char *action)
+t_tv	get_temp(void)
 {
 	t_tv	temp;
 
 	gettimeofday(&temp, NULL);
-	pthread_mutex_lock(ph->st->lock);
-	if (ph->st->its_over)
-	{
-		pthread_mutex_unlock(ph->st->lock);
-		return ;
-	}
-	printf("%ld %d %s\n",
-		(tv2ul(temp) - ph->st->start_time), ph->id, action);
-	pthread_mutex_unlock(ph->st->lock);
+	return (temp);
 }

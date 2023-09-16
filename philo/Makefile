@@ -6,7 +6,7 @@
 #    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/09/16 11:34:01 by lbiasuz@stu      ###   ########.fr        #
+#    Updated: 2023/09/16 18:40:05 by lbiasuz@stu      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ SRC_DIR	=	src
 HEAD_DIR=	include
 OBJ_DIR	=	bin
 
-SRC		=	$(SRC_DIR)/input.c $(SRC_DIR)/main.c $(SRC_DIR)/helpers.c $(SRC_DIR)/init.c \
+SRC		=	$(SRC_DIR)/main.c \
+			$(SRC_DIR)/helpers.c $(SRC_DIR)/init.c \
+			$(SRC_DIR)/threads.c $(SRC_DIR)/watch.c \
 			$(SRC_DIR)/free.c
 	
 HEAD	=	$(HEAD_DIR)/philosophers.h

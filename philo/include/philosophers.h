@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/16 09:18:59 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 18:39:04 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,29 @@ typedef struct s_ph {
 }	t_ph;
 //type_philosopher
 
-void			watch(t_ph *philosophers, t_st *st, int id);
-unsigned long	tv2ul(t_tv time);
+//helpers.c
 int				ft_atol(const char *nptr);
 void			*ft_calloc(size_t nmemb, size_t size);
-void			log_action(t_ph *ph, char *action);
+t_tv			get_temp(void);
+unsigned long	tv2ul(t_tv time);
+
+// init.c
 int				allowed_input(int argc, char **argv);
 t_ph			*init_sim(t_st *settings, t_ph *philosophers);
 t_st			*init_settings(char **args, int argc, t_st *st);
+
+//threads.c
+void			log_action(t_ph *ph, char *action);
+void			lock_forks(t_ph *ph);
 void			*philosopher_lifecycle(void *arg);
-void			free_data(t_ph *philosophers, t_st *settings);
-t_tv			get_temp(void);
+
+//watch.c
+void			yeah_its_over(t_st *st, t_tv time, int id);
+int				is_it_over(t_ph *ph, t_st *st, t_tv time, int id);
+void			its_clearly_over(t_st *st);
+void			watch(t_ph *philosophers, t_st *st, int id);
+
+//free.c
+void	free_data(t_ph *philosophers, t_st *settings);
 
 #endif

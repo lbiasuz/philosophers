@@ -6,11 +6,22 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 22:29:44 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/16 11:31:15 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 18:32:02 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
+
+int	allowed_input(int argc, char **argv)
+{
+	(void)argv;
+	if (argc > 6 || argc < 5)
+	{
+		write(2, USAGE, sizeof(USAGE) - 1);
+		return (0);
+	}
+	return (1);
+}
 
 t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 {
