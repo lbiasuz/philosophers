@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:39:04 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 19:09:47 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void			its_clearly_over(t_st *st);
 void			watch(t_ph *philosophers, t_st *st, int id);
 
 //free.c
-void	free_data(t_ph *philosophers, t_st *settings);
+void			free_data(t_ph *philosophers, t_st *settings);
 
 #endif
