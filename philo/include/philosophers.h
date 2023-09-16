@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 09:49:36 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/14 22:36:26 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 09:18:59 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_st {
 	unsigned long		die_lap;
 
 	long				servings;
+	long				satisfied;
 	int					its_over;
 	pthread_mutex_t		*lock;
 
@@ -46,8 +47,6 @@ typedef struct s_st {
 
 typedef struct s_ph {
 	int				id;
-	int				is_eating;
-	int				is_sleeping;
 	int				times_eaten;
 	unsigned long	lasteaten;
 	pthread_mutex_t	*lock;

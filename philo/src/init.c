@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 22:29:44 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/14 22:43:41 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 11:31:15 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ t_ph	*init_sim(t_st *settings, t_ph *philosophers)
 	while (i < settings->nop)
 	{
 		philosophers[i].id = i;
-		philosophers[i].is_eating = 0;
-		philosophers[i].is_sleeping = 0;
 		philosophers[i].lasteaten = 0;
 		philosophers[i].fork[0] = &settings->forks[i];
 		philosophers[i].fork[1] = &settings->forks[i + 1];

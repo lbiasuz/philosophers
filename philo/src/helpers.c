@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 22:15:38 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/12 22:44:17 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 11:07:04 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	log_action(t_ph *ph, char *action)
 		pthread_mutex_unlock(ph->st->lock);
 		return ;
 	}
-	printf("%ld philosopher %d %s\n",
+	printf("%ld %d %s\n",
 		(tv2ul(temp) - ph->st->start_time), ph->id, action);
 	pthread_mutex_unlock(ph->st->lock);
 }

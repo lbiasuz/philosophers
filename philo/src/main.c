@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 10:37:26 by lbiasuz           #+#    #+#             */
-/*   Updated: 2023/09/14 21:55:59 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/16 11:48:58 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_tv	get_temp(void)
 void	*philosopher_lifecycle(void *arg)
 {
 	pthread_mutex_lock(((t_ph *)arg)->st->lock);
-	while (!((t_ph *)arg)->st->its_over)
+	while (!((t_ph *)arg)->st->its_over && (((t_ph *)arg)->st->servings == -1 || ((t_ph *)arg)->times_eaten < ((t_ph *)arg)->st->servings))
 	{
 		pthread_mutex_unlock(((t_ph *)arg)->st->lock);
 		if (((t_ph *)arg)->id % 2 == 0)
@@ -52,6 +52,7 @@ void	*philosopher_lifecycle(void *arg)
 		log_action(((t_ph *)arg), "is thinking");
 		pthread_mutex_lock(((t_ph *)arg)->st->lock);
 	}
+	((t_ph *)arg)->st->satisfied += (((t_ph *)arg)->times_eaten >= ((t_ph *)arg)->st->servings);
 	pthread_mutex_unlock(((t_ph *)arg)->st->lock);
 	return (NULL);
 }
@@ -60,7 +61,7 @@ void	watch(t_ph *philosophers, t_st *st, int id)
 {
 	t_tv	temp;
 
-	while (1)
+	while (st->satisfied < st->nop)
 	{
 		id = (id + 1) * (id < st->nop - 1);
 		pthread_mutex_lock(philosophers[id].lock);
@@ -72,7 +73,7 @@ void	watch(t_ph *philosophers, t_st *st, int id)
 			pthread_mutex_lock(st->lock);
 			st->its_over = 1;
 			pthread_mutex_unlock(st->lock);
-			printf("%ld philosopher %d %s\n",
+			printf("%ld %d %s\n",
 				(tv2ul(temp) - st->start_time), id, "died");
 			pthread_mutex_unlock(philosophers[id].lock);
 			break ;
