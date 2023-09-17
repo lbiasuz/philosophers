@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
+#    By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/09/16 18:40:05 by lbiasuz@stu      ###   ########.fr        #
+#    Updated: 2023/09/17 03:59:03 by lbiasuz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra -g3 #-fsanitize=thread
+CFLAGS	=	-Wall -Werror -Wextra -g3 -pthread #-fsanitize=thread
 
 SRC_DIR	=	src
 HEAD_DIR=	include
