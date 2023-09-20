@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
+/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:25:23 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/16 18:38:32 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/19 22:04:32 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	log_action(t_ph *ph, char *action)
 
 void	lock_forks(t_ph *ph)
 {
-	if (ph->id % 2 == 0)
+	if (ph->id % 2 == 1)
 	{
 		pthread_mutex_lock(ph->fork[0]);
 		log_action(ph, "has taken a fork");
@@ -38,6 +38,7 @@ void	lock_forks(t_ph *ph)
 	}
 	else
 	{
+		usleep(800);
 		pthread_mutex_lock(ph->fork[1]);
 		log_action(ph, "has taken a fork");
 		pthread_mutex_lock(ph->fork[0]);
@@ -59,7 +60,8 @@ void	*philosopher_lifecycle(void *arg)
 {
 	pthread_mutex_lock(((t_ph *)arg)->st->lock);
 	while (!((t_ph *)arg)->st->its_over && (((t_ph *)arg)->st->servings == -1
-			|| ((t_ph *)arg)->times_eaten < ((t_ph *)arg)->st->servings))
+			|| ((t_ph *)arg)->times_eaten < ((t_ph *)arg)->st->servings) 
+			&& !is_it_over(((t_ph *)arg), ((t_ph *)arg)->st, get_temp(), 0))
 	{
 		pthread_mutex_unlock(((t_ph *)arg)->st->lock);
 		if (((t_ph *)arg)->st->nop == 1)

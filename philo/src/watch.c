@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   watch.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
+/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:14 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/16 18:40:49 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/19 21:44:32 by lbiasuz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	yeah_its_over(t_st *st, t_tv time, int id)
 
 int	is_it_over(t_ph *ph, t_st *st, t_tv time, int id)
 {
-	return (tv2ul(time) - st->start_time > ph[id].lasteaten
-		&& (tv2ul(time) - st->start_time - ph[id].lasteaten) > st->die_lap);
+	if (ph[id].lasteaten == 0)
+		return (tv2ul(time) - st->start_time >= st->die_lap);
+	return ((tv2ul(time) - ph[id].lasteaten) >= st->die_lap);
 }
 
 void	its_clearly_over(t_st *st)
@@ -38,16 +39,13 @@ void	its_clearly_over(t_st *st)
 
 void	watch(t_ph *philosophers, t_st *st, int id)
 {
-	t_tv	temp;
-
 	while (1)
 	{
 		id = (id + 1) * (id < st->nop - 1);
 		pthread_mutex_lock(philosophers[id].lock);
-		gettimeofday(&temp, NULL);
-		if (is_it_over(philosophers, st, temp, id))
+		if (is_it_over(philosophers, st, get_temp(), id))
 		{
-			yeah_its_over(st, temp, id);
+			yeah_its_over(st, get_temp(), id);
 			pthread_mutex_unlock(philosophers[id].lock);
 			break ;
 		}
