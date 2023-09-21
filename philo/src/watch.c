@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   watch.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:14 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/19 21:44:32 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/20 22:54:51 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	yeah_its_over(t_st *st, t_tv time, int id)
 int	is_it_over(t_ph *ph, t_st *st, t_tv time, int id)
 {
 	if (ph[id].lasteaten == 0)
-		return (tv2ul(time) - st->start_time >= st->die_lap);
-	return ((tv2ul(time) - ph[id].lasteaten) >= st->die_lap);
+		return (tv2ul(time) - st->start_time > st->die_lap);
+	return ((tv2ul(time) - ph[id].lasteaten) > st->die_lap);
 }
 
 void	its_clearly_over(t_st *st)
@@ -58,6 +58,7 @@ void	watch(t_ph *philosophers, t_st *st, int id)
 		}
 		pthread_mutex_unlock(st->lock);
 		pthread_mutex_unlock(philosophers[id].lock);
+		usleep(1000);
 	}
 	its_clearly_over(st);
 }

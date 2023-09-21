@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+        */
+/*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:25:23 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/19 22:04:32 by lbiasuz          ###   ########.fr       */
+/*   Updated: 2023/09/20 22:54:46 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	lock_forks(t_ph *ph)
 	}
 	else
 	{
-		usleep(800);
+		usleep(500);
 		pthread_mutex_lock(ph->fork[1]);
 		log_action(ph, "has taken a fork");
 		pthread_mutex_lock(ph->fork[0]);

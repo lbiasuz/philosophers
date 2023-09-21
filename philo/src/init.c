@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 22:29:44 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/16 18:32:02 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/20 22:23:27 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_st	*init_settings(char **args, int argc, t_st *st)
 	else
 		st->servings = -1;
 	st->its_over = 0;
+	st->satisfied = 0;
 	gettimeofday(&start, NULL);
 	st->start_time = tv2ul(start);
 	st->forks = ft_calloc(st->nop, sizeof(pthread_mutex_t));

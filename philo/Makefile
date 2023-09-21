@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbiasuz <lbiasuz@student.42sp.org.br>      +#+  +:+       +#+         #
+#    By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/02 10:03:39 by lbiasuz           #+#    #+#              #
-#    Updated: 2023/09/17 03:59:03 by lbiasuz          ###   ########.fr        #
+#    Updated: 2023/09/20 22:58:38 by lbiasuz@stu      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
