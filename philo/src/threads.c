@@ -6,7 +6,7 @@
 /*   By: lbiasuz@student.42sp.org.br <lbiasuz>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:25:23 by lbiasuz@stu       #+#    #+#             */
-/*   Updated: 2023/09/20 22:54:46 by lbiasuz@stu      ###   ########.fr       */
+/*   Updated: 2023/09/21 12:37:20 by lbiasuz@stu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	*philosopher_lifecycle(void *arg)
 {
 	pthread_mutex_lock(((t_ph *)arg)->st->lock);
 	while (!((t_ph *)arg)->st->its_over && (((t_ph *)arg)->st->servings == -1
-			|| ((t_ph *)arg)->times_eaten < ((t_ph *)arg)->st->servings) 
-			&& !is_it_over(((t_ph *)arg), ((t_ph *)arg)->st, get_temp(), 0))
+			|| ((t_ph *)arg)->times_eaten < ((t_ph *)arg)->st->servings)
+		&& !is_it_over(((t_ph *)arg), ((t_ph *)arg)->st, get_temp(), 0))
 	{
 		pthread_mutex_unlock(((t_ph *)arg)->st->lock);
 		if (((t_ph *)arg)->st->nop == 1)
